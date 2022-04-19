@@ -41,6 +41,5 @@ public class ParametrizationController {
         } catch(Exception ex) {
             return new ResponseEntity<>(HttpStatus.SEE_OTHER);
         }
-
     }
 }
