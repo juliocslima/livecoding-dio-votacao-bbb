@@ -17,7 +17,7 @@ public class ParametrizationService {
     public ParameterizationModel findParameterById(String key) {
         return parameterizationRepository.findById(key)
                 .orElseThrow(() -> new ParametrizationNotFoundException(
-                        String.format("Employee by id: %s was not found", key.toString()))
+                        String.format("Parâmetro by key: %s was not found", key.toString()))
                 );
     }
 

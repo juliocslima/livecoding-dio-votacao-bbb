@@ -1,5 +1,9 @@
 package me.dio.votacao.bbb.api.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import me.dio.votacao.bbb.api.exception.ParametrizationNotFoundException;
 import me.dio.votacao.bbb.api.model.ParameterizationModel;
 import me.dio.votacao.bbb.api.service.ParametrizationService;
 import org.springframework.http.HttpStatus;
@@ -16,15 +20,27 @@ public class ParametrizationController {
         this.parametrizationService = parametrizationService;
     }
 
+    @ApiOperation(value = "Cria novos parâmetros para a aplicação")
     @PostMapping("/save")
     public ResponseEntity<ParameterizationModel> save(@RequestBody ParameterizationModel param) {
         ParameterizationModel newParameter = parametrizationService.addParameter(param);
         return new ResponseEntity<>(newParameter, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Busca parâmetros da aplicação cadastrados")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Não é possível excluir um parâmetro cadastrado"),
+            @ApiResponse(code = 404, message = "Chave de parâmetro inexistente") })
     @GetMapping("/find/{key}")
     public ResponseEntity<ParameterizationModel> find(@PathVariable("key") String key) {
-        ParameterizationModel param = parametrizationService.findParameterById(key);
-        return new ResponseEntity<>(param, HttpStatus.OK);
+        try{
+            ParameterizationModel param = parametrizationService.findParameterById(key);
+            return new ResponseEntity<>(param, HttpStatus.OK);
+        } catch (ParametrizationNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.SEE_OTHER);
+        }
+
     }
 }
