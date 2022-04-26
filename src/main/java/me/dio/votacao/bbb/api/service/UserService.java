@@ -52,11 +52,23 @@ public class UserService {
 
     public UserDTO save(UserNewDTO user) {
 
+        UserModel tempUser = userRepository.findByEmail(user.getEmail());
+
+        if(tempUser != null) {
+            throw new DataIntegrityException(
+                    String.format("E-mail já cadastrado! Id: %s, Tipo: %s",
+                        tempUser.getEmail(),
+                        UserModel.class.getName()
+                    )
+            );
+        }
+
         UserModel newUser = UserModel.create(user);
 
         newUser.setId(null);
         newUser.setEmail(user.getEmail().toLowerCase());
-        newUser.addPerfil(Perfil.USUARIO);
+        newUser.addRole(Perfil.USUARIO);
+        newUser.addRole(Perfil.ADMIN);
         newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         UserModel createdUser = userRepository.save(newUser);

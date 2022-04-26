@@ -21,9 +21,9 @@ public class UserNewDTO {
     private String password;
     private String email;
     private String avatarImage;
-    private Set<Integer> perfis = new HashSet<>();
+    private Set<Integer> roles = new HashSet<>();
     public void addPerfil(Perfil perfil) {
-        perfis.add(perfil.getCodigo());
+        roles.add(perfil.getCodigo());
     }
 
 }

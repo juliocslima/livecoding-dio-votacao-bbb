@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -36,7 +37,10 @@ public class UserModel {
     @CollectionTable(name = "PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
-    public void addPerfil(Perfil perfil) {
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+    public void addRole(Perfil perfil) {
         perfis.add(perfil.getCodigo());
     }
 
