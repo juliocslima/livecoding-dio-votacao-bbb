@@ -38,7 +38,7 @@ public class UserController {
         } catch (ObjectNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(Exception ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.SEE_OTHER);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

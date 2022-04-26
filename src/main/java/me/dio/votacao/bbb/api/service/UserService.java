@@ -3,11 +3,14 @@ package me.dio.votacao.bbb.api.service;
 import me.dio.votacao.bbb.api.dto.UserDTO;
 import me.dio.votacao.bbb.api.dto.UserNewDTO;
 import me.dio.votacao.bbb.api.enumerator.Perfil;
+import me.dio.votacao.bbb.api.exception.AuthorizationException;
 import me.dio.votacao.bbb.api.exception.DataIntegrityException;
 import me.dio.votacao.bbb.api.exception.ObjectNotFoundException;
 import me.dio.votacao.bbb.api.model.UserModel;
 import me.dio.votacao.bbb.api.repository.UserRepository;
+import me.dio.votacao.bbb.api.security.UserSecurity;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,12 @@ public class UserService {
 
     public UserModel findById(String id) {
 
+        UserSecurity user = authenticated();
+
+        if(user == null || user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw  new AuthorizationException("Acesso negado");
+        }
+
         return userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException(
                         String.format("Objeto não encontrado! Id: %s, Tipo: %s",
@@ -35,6 +44,8 @@ public class UserService {
     }
 
     public UserDTO findByEmail(String email) {
+
+        AuthenticatedUser(email);
 
         UserModel user = userRepository.findByEmail(email);
 
@@ -82,6 +93,22 @@ public class UserService {
             userRepository.deleteById(id);
         } catch (DataIntegrityViolationException exception) {
             throw new DataIntegrityException("Não é possível excluir um Usuário com relacionamentos.");
+        }
+    }
+
+    private void AuthenticatedUser(String email) {
+        UserSecurity user = authenticated();
+
+        if(user == null || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+    }
+
+    public static UserSecurity authenticated() {
+        try {
+            return (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception ex) {
+            return null;
         }
     }
 }

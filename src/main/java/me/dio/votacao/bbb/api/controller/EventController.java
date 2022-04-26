@@ -34,7 +34,7 @@ public class EventController {
         } catch (ObjectNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(Exception ex) {
-            return new ResponseEntity<>(HttpStatus.SEE_OTHER);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

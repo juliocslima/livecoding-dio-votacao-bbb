@@ -35,14 +35,14 @@ public class ParametrizationController {
             @ApiResponse(code = 400, message = "Não é possível excluir um parâmetro cadastrado"),
             @ApiResponse(code = 404, message = "Chave de parâmetro inexistente") })
     @GetMapping("/find/{key}")
-    public ResponseEntity<ParameterizationModel> find(@PathVariable("key") String key) {
+    public ResponseEntity<?> find(@PathVariable("key") String key) {
         try{
             ParameterizationModel param = parametrizationService.findParameterById(key);
             return new ResponseEntity<>(param, HttpStatus.OK);
         } catch (ObjectNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(Exception ex) {
-            return new ResponseEntity<>(HttpStatus.SEE_OTHER);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
