@@ -9,6 +9,7 @@ import me.dio.votacao.bbb.api.model.ParticipantModel;
 import me.dio.votacao.bbb.api.service.ParticipantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ParticipantController {
     }
 
     @ApiOperation(value = "Adicionar participantes para o BBB")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<ParticipantModel> save(@RequestBody ParticipantModel participant) {
         participant.setId(UUID.randomUUID().toString());

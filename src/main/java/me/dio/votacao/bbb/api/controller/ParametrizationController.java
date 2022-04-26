@@ -8,6 +8,7 @@ import me.dio.votacao.bbb.api.model.ParameterizationModel;
 import me.dio.votacao.bbb.api.service.ParametrizationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class ParametrizationController {
     }
 
     @ApiOperation(value = "Cria novos parâmetros para a aplicação")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<ParameterizationModel> save(@RequestBody ParameterizationModel param) {
         ParameterizationModel newParameter = parametrizationService.addParameter(param);

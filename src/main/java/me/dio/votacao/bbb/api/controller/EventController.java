@@ -9,6 +9,7 @@ import me.dio.votacao.bbb.api.model.EventModel;
 import me.dio.votacao.bbb.api.service.EventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,7 @@ public class EventController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody EventModel event) throws Exception {
         try {
@@ -47,6 +49,7 @@ public class EventController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping
     public ResponseEntity<EventModel> save(@RequestBody EventModel event) {
         EventModel updatedEvent =  eventService.save(event);

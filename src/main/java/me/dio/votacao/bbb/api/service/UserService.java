@@ -68,7 +68,6 @@ public class UserService {
         newUser.setId(null);
         newUser.setEmail(user.getEmail().toLowerCase());
         newUser.addRole(Perfil.USUARIO);
-        newUser.addRole(Perfil.ADMIN);
         newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         UserModel createdUser = userRepository.save(newUser);
