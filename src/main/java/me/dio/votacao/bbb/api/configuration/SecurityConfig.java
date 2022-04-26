@@ -17,23 +17,27 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Environment environment;
 
     private static final String[]  PUBLIC_MATCHERS = {
-            "/api/v1/**",
-            "/**",
-            "/v2/api-docs/**"
+            "/h2-console/**",
+            "/v2/api-docs/**",
+            "/swagger/**"
     };
 
     private static final String[]  PUBLIC_MATCHERS_GET = {
-            "/api/v1/**"
+            "/api/v1/participant/**",
+            "/api/v1/status/**",
     };
 
     private static final String[]  PUBLIC_MATCHERS_POST = {
-            "/api/v1/**"
+
+    };
+
+    private static final String[]  PUBLIC_MATCHERS_PUT = {
+
     };
 
 

@@ -15,9 +15,11 @@ public class ParticipantsDTO {
 
     private String id;
     private String name;
-    private String photo;
+    private String photoPagina;
+    private String photoEnquete;
     private String description;
     private String edicao_bbb;
+    private Boolean eliminated;
 
     public static ParticipantsDTO create(ParticipantModel estado) {
         return new ModelMapper().map(estado, ParticipantsDTO.class);

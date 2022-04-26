@@ -1,17 +1,12 @@
 package me.dio.votacao.bbb.api.controller;
 
-import me.dio.votacao.bbb.api.exception.ParametrizationNotFoundException;
-import me.dio.votacao.bbb.api.model.ParticipantModel;
 import me.dio.votacao.bbb.api.service.VotacaoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/votacao")
+@CrossOrigin
 public class VotacaoController {
 
     private final VotacaoService votacaoService;

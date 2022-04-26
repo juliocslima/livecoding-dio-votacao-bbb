@@ -4,10 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import me.dio.votacao.bbb.api.dto.ParticipantsDTO;
-import me.dio.votacao.bbb.api.exception.ParametrizationNotFoundException;
+import me.dio.votacao.bbb.api.exception.ObjectNotFoundException;
 import me.dio.votacao.bbb.api.model.ParticipantModel;
 import me.dio.votacao.bbb.api.service.ParticipantService;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/participant")
+@CrossOrigin
 public class ParticipantController {
 
     private final ParticipantService participantService;
@@ -30,6 +30,7 @@ public class ParticipantController {
     @PostMapping("/save")
     public ResponseEntity<ParticipantModel> save(@RequestBody ParticipantModel participant) {
         participant.setId(UUID.randomUUID().toString());
+        participant.setEliminated(false);
         ParticipantModel newParameter = participantService.addParticipant(participant);
         return new ResponseEntity<>(newParameter, HttpStatus.CREATED);
     }
@@ -43,7 +44,7 @@ public class ParticipantController {
         try{
             ParticipantModel participant = participantService.findParticipantById(id);
             return new ResponseEntity<>(participant, HttpStatus.OK);
-        } catch (ParametrizationNotFoundException ex) {
+        } catch (ObjectNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(Exception ex) {
             return new ResponseEntity<>(HttpStatus.SEE_OTHER);

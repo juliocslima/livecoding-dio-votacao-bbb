@@ -9,15 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("participants")
-public class ParticipantModel {
+@Document("indicated")
+public class IndicatedModel {
 
     @Id
     private String id;
-    private String name;
-    private String photoPagina;
-    private String photoEnquete;
-    private String description;
-    private String edicao_bbb;
-    private Boolean eliminated;
+    private ParticipantModel participant;
+    private Integer status_id;
 }

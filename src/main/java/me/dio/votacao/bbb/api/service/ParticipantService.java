@@ -1,7 +1,6 @@
 package me.dio.votacao.bbb.api.service;
 
-import me.dio.votacao.bbb.api.dto.ParticipantsDTO;
-import me.dio.votacao.bbb.api.exception.ParametrizationNotFoundException;
+import me.dio.votacao.bbb.api.exception.ObjectNotFoundException;
 import me.dio.votacao.bbb.api.model.ParticipantModel;
 import me.dio.votacao.bbb.api.repository.ParticipantRepository;
 import org.springframework.data.domain.Sort;
@@ -20,7 +19,7 @@ public class ParticipantService {
 
     public ParticipantModel findParticipantById(String id) {
         return participantRepository.findById(id)
-                .orElseThrow(() -> new ParametrizationNotFoundException(
+                .orElseThrow(() -> new ObjectNotFoundException(
                         String.format("Participante by id: %s was not found", id.toString()))
                 );
     }

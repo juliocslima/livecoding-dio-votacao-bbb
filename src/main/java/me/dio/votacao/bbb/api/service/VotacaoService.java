@@ -1,6 +1,6 @@
 package me.dio.votacao.bbb.api.service;
 
-import me.dio.votacao.bbb.api.exception.ParticipantNotFoundException;
+import me.dio.votacao.bbb.api.exception.ObjectNotFoundException;
 import me.dio.votacao.bbb.api.model.ParticipantModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +26,7 @@ public class VotacaoService {
         try {
             ParticipantModel participant = participantService.findParticipantById(id);
             template.send(TOPICO_VOTACAO, participant);
-        } catch (ParticipantNotFoundException ex) {
+        } catch (ObjectNotFoundException ex) {
             logger.info(ex.getMessage());
         }
     }
