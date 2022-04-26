@@ -2,6 +2,7 @@ package me.dio.votacao.bbb.api.configuration;
 
 import me.dio.votacao.bbb.api.security.JWTUtil;
 import me.dio.votacao.bbb.api.security.JwtAuthenticationFilter;
+import me.dio.votacao.bbb.api.security.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -78,6 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
+
+        http
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, jwtUtil));
 
         http
                 .sessionManagement()

@@ -1,7 +1,5 @@
 package me.dio.votacao.bbb.api.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.dio.votacao.bbb.api.enumerator.Perfil;
 import org.springframework.security.core.GrantedAuthority;
