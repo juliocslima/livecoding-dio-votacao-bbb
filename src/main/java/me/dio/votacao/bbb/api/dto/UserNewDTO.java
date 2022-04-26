@@ -3,21 +3,27 @@ package me.dio.votacao.bbb.api.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.dio.votacao.bbb.api.enumerator.Perfil;
 import me.dio.votacao.bbb.api.model.UserModel;
 import org.modelmapper.ModelMapper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserNewDTO {
 
     private String id;
     private String name;
     private String username;
+    private String password;
     private String email;
     private String avatarImage;
-
-    public static UserDTO create(UserModel user) {
-        return new ModelMapper().map(user, UserDTO.class);
+    private Set<Integer> perfis = new HashSet<>();
+    public void addPerfil(Perfil perfil) {
+        perfis.add(perfil.getCodigo());
     }
+
 }

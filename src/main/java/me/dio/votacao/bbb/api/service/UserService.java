@@ -1,21 +1,26 @@
 package me.dio.votacao.bbb.api.service;
 
 import me.dio.votacao.bbb.api.dto.UserDTO;
+import me.dio.votacao.bbb.api.dto.UserNewDTO;
 import me.dio.votacao.bbb.api.enumerator.Perfil;
 import me.dio.votacao.bbb.api.exception.DataIntegrityException;
 import me.dio.votacao.bbb.api.exception.ObjectNotFoundException;
 import me.dio.votacao.bbb.api.model.UserModel;
 import me.dio.votacao.bbb.api.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public UserModel findById(String id) {
@@ -45,14 +50,18 @@ public class UserService {
         return UserDTO.create(user);
     }
 
-    public UserDTO save(UserModel user) {
-        user.setId(null);
-        user.setEmail(user.getEmail().toLowerCase());
-        user.addPerfil(Perfil.USUARIO);
+    public UserDTO save(UserNewDTO user) {
 
-        UserModel newUser = userRepository.save(user);
+        UserModel newUser = UserModel.create(user);
 
-        return UserDTO.create(newUser);
+        newUser.setId(null);
+        newUser.setEmail(user.getEmail().toLowerCase());
+        newUser.addPerfil(Perfil.USUARIO);
+        newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        UserModel createdUser = userRepository.save(newUser);
+
+        return UserDTO.create(createdUser);
     }
 
     public void deleteById(String id) {
